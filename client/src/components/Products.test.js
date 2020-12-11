@@ -11,8 +11,8 @@ const expectedProductsProp = [
   { id: 3, title: 'product3' },
 ];
 
-const setup = (products = []) => {
-  return shallow(<Products products={products} />);
+const setup = (products = [], loading = false) => {
+  return shallow(<Products products={products} loading={loading} />);
 };
 
 describe('if there are no products', () => {
@@ -73,12 +73,38 @@ describe('if there are products to be listed', () => {
   });
 });
 
+describe('if search in progress', () => {
+  let wrapper;
+
+  beforeEach(() => {
+    wrapper = setup([], true);
+  });
+
+  test('renders products component without error', () => {
+    const component = findByTestAttr(wrapper, 'component-products');
+
+    expect(component.length).toBe(1);
+  });
+
+  test('does not render a message', () => {
+    const message = findByTestAttr(wrapper, 'products-message');
+
+    expect(message.length).toBe(0);
+  });
+
+  test('renders spinner without error', () => {
+    const spinner = findByTestAttr(wrapper, 'products-loading');
+
+    expect(spinner.length).toBe(1);
+  });
+});
+
 describe('check props', () => {
   test('`products` prop is an empty array', () => {
-    checkProps(Products, { products: [] });
+    checkProps(Products, { products: [], loading: false });
   });
 
   test('`products` prop is a non-empty array with expected shape of components', () => {
-    checkProps(Products, { products: expectedProductsProp });
+    checkProps(Products, { products: expectedProductsProp, loading: false });
   });
 });
