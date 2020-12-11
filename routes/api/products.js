@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { check, validationResult } = require('express-validator');
+const { query, validationResult } = require('express-validator');
 const axios = require('axios');
 const config = require('config');
 
@@ -13,7 +13,7 @@ const config = require('config');
  */
 router.get(
   '/',
-  [check('keyword', 'Please enter a keyword').not().isEmpty()],
+  [query('keyword', 'Please enter a keyword').not().isEmpty()],
   async (req, res) => {
     const errors = validationResult(req);
 
@@ -27,7 +27,7 @@ router.get(
         `https://${config.get('apiKey')}:${config.get(
           'apiSecret'
         )}@${config.get('apiURL')}/admin/products.json?title=${
-          req.body.keyword
+          req.query.keyword
         }&fields=id,title`
       );
 
