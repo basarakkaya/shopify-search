@@ -26,6 +26,10 @@ export const UnconnectedProducts = ({
   keyword = '',
   searchProducts,
 }) => {
+  /**
+   * @description calls `searchProducts` action creator to load more products
+   * with the current search keyword.
+   */
   const loadMore = () => {
     searchProducts(keyword, products[products.length - 1].id);
   };

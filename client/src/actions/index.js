@@ -9,6 +9,13 @@ export const actionTypes = {
   NEW_SEARCH: 'NEW_SEARCH',
 };
 
+/**
+ * @description Displays an alert for a time - Usually used for warnings and errors
+ * @param {string} msg Message to be displayed within the alert
+ * @param {('primary'|'secondary'|'success'|'danger'|'warning'|'info'|'light'|'dark')} alertType
+ * Alert color type
+ * @param {number} timeout Display time of the alert - defaults to 5000ms
+ */
 export const setAlert = (msg, alertType, timeout = 5000) => (dispatch) => {
   const id = v4();
 
@@ -31,6 +38,12 @@ export const setAlert = (msg, alertType, timeout = 5000) => (dispatch) => {
   }, timeout);
 };
 
+/**
+ * @description Searches products with the title containing given keyword.
+ * @param {string} keyword Word to be search within product titles
+ * @param {number} lastId ID of the last product that is displayed. Used for pagination
+ * - defaults to 0 to start from the beginning of the product list
+ */
 export const searchProducts = (keyword, lastId = 0) => async (dispatch) => {
   try {
     if (!lastId) dispatch({ type: actionTypes.NEW_SEARCH, payload: keyword });

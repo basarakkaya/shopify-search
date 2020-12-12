@@ -7,6 +7,16 @@ const initialState = {
   keyword: '',
 };
 
+/**
+ * @function searchReducer
+ * @param {{
+ *  keyword: string,
+ *  loading: boolean,
+ *  products: array
+ * }} state state object
+ * @param  {object} action action to be reduced
+ * @returns {object} new search state
+ */
 export default (state = initialState, action) => {
   const { type, payload } = action;
 

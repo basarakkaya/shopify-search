@@ -3,6 +3,12 @@ import { actionTypes } from '../actions';
 
 const initialState = [];
 
+/**
+ * @function alertReducer
+ * @param {array} state Array of alerts
+ * @param  {object} action action to be reduced
+ * @returns {array} new alert state
+ */
 export default (state = initialState, action) => {
   const { type, payload } = action;
 

@@ -15,6 +15,11 @@ const CustomInputGroup = styled(InputGroup)`
 export const UnconnectedSearch = ({ searchProducts }) => {
   const [keyword, setKeyword] = React.useState('');
 
+  /**
+   * @description Initiates a search with the entered keyword.
+   * Clears the input field.
+   * @param {event} e Click event
+   */
   const search = (e) => {
     e.preventDefault();
 
