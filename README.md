@@ -13,7 +13,7 @@ IMPORTANT: You need to set these environment variables as your Shopify credentia
 ```
 SHOPIFY_API_KEY= <Your Shopify API Key>
 SHOPIFY_SECRET= <Your Shopify API Secret>
-SHOPIFY_API_URL= <Your Shopify URL>
+SHOPIFY_API_URL= <Your Shopify URL - without http and trailing slash>
 ```
 
 To run on your local server, you need to create `.env` file in the root directory and set these variable inside.
