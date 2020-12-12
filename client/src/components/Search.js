@@ -1,13 +1,17 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
-const Search = () => {
+import { searchProducts } from '../actions';
+
+export const UnconnectedSearch = ({ searchProducts }) => {
   const [keyword, setKeyword] = React.useState('');
 
   const search = (e) => {
     e.preventDefault();
 
     // Submit Keyword
-    console.log(keyword);
+    searchProducts(keyword);
 
     setKeyword('');
   };
@@ -30,4 +34,8 @@ const Search = () => {
   );
 };
 
-export default Search;
+UnconnectedSearch.propTypes = {
+  searchProducts: PropTypes.func.isRequired,
+};
+
+export default connect(null, { searchProducts })(UnconnectedSearch);
