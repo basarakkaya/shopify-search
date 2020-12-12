@@ -1,5 +1,9 @@
 /* eslint-disable react/forbid-foreign-prop-types */
 import checkPropTypes from 'check-prop-types';
+import { applyMiddleware, createStore } from 'redux';
+
+import rootReducer from '../src/reducers';
+import { middlewares } from '../src/store';
 
 /**
  * Return node(s) with the given data-test attribute.
@@ -24,4 +28,19 @@ export const checkProps = (component, conformingProps) => {
     component.name
   );
   expect(propError).toBeUndefined();
+};
+
+/**
+ * Create a teting store with imported reducers, middleware,
+ * and initial state
+ * globals: rootReducer.
+ * @function storeFactory
+ * @param {object} initialState - Initial state for store
+ * @returns {Store} Redux store
+ */
+export const storeFactory = (initialState) => {
+  const createStoreWithMiddleware = applyMiddleware(...middlewares)(
+    createStore
+  );
+  return createStoreWithMiddleware(rootReducer, initialState);
 };
