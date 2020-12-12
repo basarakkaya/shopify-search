@@ -31,7 +31,7 @@ router.get(
         }&fields=id,title`
       );
 
-      return res.status(200).json(products.data);
+      return res.status(200).json(products.data.products);
     } catch (error) {
       console.error('An Error Occurred: ', error.message);
       res.status(500).send('Server Error');
