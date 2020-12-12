@@ -1,14 +1,17 @@
 {
-  "name": "shopify-rest",
+  "name": "shopify-search",
   "version": "0.0.0",
   "private": true,
+  "main": "server.js",
   "scripts": {
-    "start": "node server",
+    "start": "cross-env NODE_ENV=production node server",
     "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
     "dev:server": "nodemon server",
     "dev:client": "npm start --prefix client",
     "test:server": "cross-env NODE_ENV=test jest --debug",
-    "test:client": "npm test --prefix client"
+    "test:client": "npm test --prefix client",
+    "build:client": "npm run build --prefix client",
+    "heroku-postbuild": "cross-env NPM_CONFIG_PRODUCTION=false npm install --prefix client"
   },
   "dependencies": {
     "axios": "^0.21.0",
