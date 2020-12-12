@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 
 import { checkProps, findByTestAttr, storeFactory } from '../../test/testUtils';
 
-import Products from './Products';
+import Products, { UnconnectedProducts } from './Products';
 
 const expectedProductsProp = [
   { id: 1, title: 'product1' },
@@ -23,7 +23,14 @@ describe('if there are no products', () => {
   let wrapper;
 
   beforeEach(() => {
-    wrapper = setup({ search: { products: [], loading: false } });
+    wrapper = setup({
+      search: {
+        products: [],
+        loading: false,
+        keyword: '',
+        searchProducts: () => {},
+      },
+    });
   });
 
   test('renders products component without error', () => {
@@ -43,6 +50,12 @@ describe('if there are no products', () => {
 
     expect(list.length).toBe(0);
   });
+
+  test('does not render `load more` button', () => {
+    const loadMore = findByTestAttr(wrapper, 'products-load-more');
+
+    expect(loadMore.length).toBe(0);
+  });
 });
 
 describe('if there are products to be listed', () => {
@@ -50,7 +63,12 @@ describe('if there are products to be listed', () => {
 
   beforeEach(() => {
     wrapper = setup({
-      search: { products: expectedProductsProp, loading: false },
+      search: {
+        products: expectedProductsProp,
+        loading: false,
+        keyword: '',
+        searchProducts: () => {},
+      },
     });
   });
 
@@ -77,13 +95,62 @@ describe('if there are products to be listed', () => {
 
     expect(products.length).toBe(3);
   });
+
+  test('renders `load more` button', () => {
+    const loadMore = findByTestAttr(wrapper, 'products-load-more');
+
+    expect(loadMore.length).toBe(1);
+  });
+
+  describe('`loadMore` button is clicked', () => {
+    let searchProductsMock;
+    let wrapper;
+    const keyword = 'testKeyword';
+    const lastId = 1;
+
+    beforeEach(() => {
+      searchProductsMock = jest.fn();
+
+      const props = {
+        keyword,
+        loading: false,
+        products: [{ id: lastId, title: 'title1' }],
+        searchProducts: searchProductsMock,
+      };
+
+      wrapper = shallow(<UnconnectedProducts {...props} />);
+
+      const loadMore = findByTestAttr(wrapper, 'products-load-more');
+      loadMore.simulate('click', { preventDefault() {} });
+    });
+
+    test('searchProduct action creator runs on click', () => {
+      const searchProductsCallCount = searchProductsMock.mock.calls.length;
+
+      expect(searchProductsCallCount).toBe(1);
+    });
+
+    test('searchProduct action creator is called with correct arguments', () => {
+      const searchProductArgs = searchProductsMock.mock.calls[0];
+
+      expect(searchProductArgs[0]).toBe(keyword);
+      expect(searchProductArgs[1]).toBe(lastId);
+    });
+  });
 });
 
 describe('if search in progress', () => {
   let wrapper;
 
   beforeEach(() => {
-    wrapper = setup({ search: { products: [], loading: true } });
+    wrapper = setup({
+      search: {
+        products: [],
+        loading: true,
+        keyword: '',
+        searchProducts: () => {},
+      },
+    });
   });
 
   test('renders products component without error', () => {
@@ -92,10 +159,10 @@ describe('if search in progress', () => {
     expect(component.length).toBe(1);
   });
 
-  test('does not render a message', () => {
+  test('render a message', () => {
     const message = findByTestAttr(wrapper, 'products-message');
 
-    expect(message.length).toBe(0);
+    expect(message.length).toBe(1);
   });
 
   test('renders spinner without error', () => {
@@ -103,14 +170,30 @@ describe('if search in progress', () => {
 
     expect(spinner.length).toBe(1);
   });
+
+  test('does not render `load more` button', () => {
+    const loadMore = findByTestAttr(wrapper, 'products-load-more');
+
+    expect(loadMore.length).toBe(0);
+  });
 });
 
 describe('check props', () => {
   test('`products` prop is an empty array', () => {
-    checkProps(Products, { products: [], loading: false });
+    checkProps(Products, {
+      products: [],
+      loading: false,
+      keyword: '',
+      searchProducts: () => {},
+    });
   });
 
   test('`products` prop is a non-empty array with expected shape of components', () => {
-    checkProps(Products, { products: expectedProductsProp, loading: false });
+    checkProps(Products, {
+      products: expectedProductsProp,
+      loading: false,
+      keyword: '',
+      searchProducts: () => {},
+    });
   });
 });

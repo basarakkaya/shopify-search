@@ -16,6 +16,7 @@ test('returns an array of products and `false` of loading upon receiving SEARCH'
   expect(newState).toEqual({
     loading: false,
     products,
+    keyword: '',
   });
 });
 
@@ -27,5 +28,19 @@ test('returns an empty array of products and `true` of loading upon receiving SE
   expect(newState).toEqual({
     loading: true,
     products: [],
+    keyword: '',
+  });
+});
+
+test('sets the keyword upon receiving NEW_SEARCH', () => {
+  const newState = searchReducer(undefined, {
+    type: actionTypes.NEW_SEARCH,
+    payload: 'test',
+  });
+
+  expect(newState).toEqual({
+    loading: false,
+    products: [],
+    keyword: 'test',
   });
 });

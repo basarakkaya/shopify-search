@@ -4,6 +4,7 @@ import { actionTypes } from '../actions';
 const initialState = {
   loading: false,
   products: [],
+  keyword: '',
 };
 
 export default (state = initialState, action) => {
@@ -14,13 +15,19 @@ export default (state = initialState, action) => {
       return {
         ...state,
         loading: true,
-        products: [],
       };
     case actionTypes.SEARCH:
       return {
         ...state,
         loading: false,
-        products: payload,
+        products: [...state.products, ...payload],
+      };
+    case actionTypes.NEW_SEARCH:
+      return {
+        ...state,
+        keyword: payload,
+        loading: false,
+        products: [],
       };
     default:
       return state;

@@ -6,6 +6,7 @@ export const actionTypes = {
   SEARCH_INPROGRESS: 'SEARCH_INPROGRESS',
   SET_ALERT: 'SET_ALERT',
   REMOVE_ALERT: 'REMOVE_ALERT',
+  NEW_SEARCH: 'NEW_SEARCH',
 };
 
 export const setAlert = (msg, alertType, timeout = 5000) => (dispatch) => {
@@ -30,12 +31,14 @@ export const setAlert = (msg, alertType, timeout = 5000) => (dispatch) => {
   }, timeout);
 };
 
-export const searchProducts = (keyword) => async (dispatch) => {
+export const searchProducts = (keyword, lastId = 0) => async (dispatch) => {
   try {
+    if (!lastId) dispatch({ type: actionTypes.NEW_SEARCH, payload: keyword });
+
     dispatch({ type: actionTypes.SEARCH_INPROGRESS });
 
     const products = await axios.get(
-      `/api/products${keyword && `?keyword=${keyword}`}`
+      `/api/products${keyword && `?keyword=${keyword}&lastId=${lastId}`}`
     );
 
     dispatch({ type: actionTypes.SEARCH, payload: products.data });
