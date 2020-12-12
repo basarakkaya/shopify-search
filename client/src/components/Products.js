@@ -1,9 +1,10 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import Product from './Product';
 
-const Products = ({ products = [], loading }) => {
+const UnconnectedProducts = ({ products = [], loading }) => {
   const spinner = loading && <div data-test='products-loading'></div>;
 
   const message = !loading && (
@@ -35,7 +36,7 @@ const Products = ({ products = [], loading }) => {
   );
 };
 
-Products.propTypes = {
+UnconnectedProducts.propTypes = {
   products: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
@@ -45,4 +46,9 @@ Products.propTypes = {
   loading: PropTypes.bool.isRequired,
 };
 
-export default Products;
+const mapStateToProps = ({ search: { products, loading } }) => ({
+  products,
+  loading,
+});
+
+export default connect(mapStateToProps)(UnconnectedProducts);

@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { checkProps, findByTestAttr } from '../../test/testUtils';
+import { checkProps, findByTestAttr, storeFactory } from '../../test/testUtils';
 
 import Products from './Products';
 
@@ -11,15 +11,19 @@ const expectedProductsProp = [
   { id: 3, title: 'product3' },
 ];
 
-const setup = (products = [], loading = false) => {
-  return shallow(<Products products={products} loading={loading} />);
+const setup = (initialState = {}) => {
+  const store = storeFactory(initialState);
+  const wrapper = shallow(<Products store={store} />)
+    .dive()
+    .dive();
+  return wrapper;
 };
 
 describe('if there are no products', () => {
   let wrapper;
 
   beforeEach(() => {
-    wrapper = setup();
+    wrapper = setup({ search: { products: [], loading: false } });
   });
 
   test('renders products component without error', () => {
@@ -45,7 +49,9 @@ describe('if there are products to be listed', () => {
   let wrapper;
 
   beforeEach(() => {
-    wrapper = setup(expectedProductsProp);
+    wrapper = setup({
+      search: { products: expectedProductsProp, loading: false },
+    });
   });
 
   test('renders products component without error', () => {
@@ -77,7 +83,7 @@ describe('if search in progress', () => {
   let wrapper;
 
   beforeEach(() => {
-    wrapper = setup([], true);
+    wrapper = setup({ search: { products: [], loading: true } });
   });
 
   test('renders products component without error', () => {
