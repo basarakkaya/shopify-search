@@ -1,17 +1,27 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import { Alert } from 'reactstrap';
+
+const AlertContainer = styled.div`
+  margin: 1rem 0px;
+`;
 
 const UnconnectedAlerts = ({ alerts }) => {
   return (
-    <div data-test='component-alerts'>
+    <AlertContainer data-test='component-alerts'>
       {alerts.length > 0 &&
         alerts.map((alert) => (
-          <div data-test='alerts-alert' key={alert.id}>
+          <Alert
+            data-test='alerts-alert'
+            key={alert.id}
+            color={alert.alertType}
+          >
             {alert.msg}
-          </div>
+          </Alert>
         ))}
-    </div>
+    </AlertContainer>
   );
 };
 

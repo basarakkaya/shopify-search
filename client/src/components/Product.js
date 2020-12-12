@@ -1,12 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import { Card, CardBody, CardTitle, CardSubtitle, CardText } from 'reactstrap';
+import { loremIpsum } from 'lorem-ipsum';
+
+const CustomCard = styled(Card)`
+  height: 100%;
+`;
 
 const Product = ({ product: { title = '', id = '' } }) => {
   return (
-    <div data-test='component-product'>
-      <h5 data-test='product-title'>{title}</h5>
-      <p data-test='product-id'>{id}</p>
-    </div>
+    <CustomCard data-test='component-product'>
+      <CardBody>
+        <CardTitle data-test='product-title' tag='h5'>
+          {title}
+        </CardTitle>
+        <CardSubtitle
+          data-test='product-id'
+          tag='h6'
+          className='mb-2 text-muted'
+        >
+          ID: {id}
+        </CardSubtitle>
+        <CardText>{loremIpsum()}</CardText>
+      </CardBody>
+    </CustomCard>
   );
 };
 
