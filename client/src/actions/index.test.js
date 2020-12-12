@@ -12,7 +12,7 @@ describe('searchProducts', () => {
     moxios.uninstall();
   });
 
-  test('adds products to state', () => {
+  test('adds products to state when successful', () => {
     const products = [
       { id: 1, title: 'title1' },
       { id: 2, title: 'title2' },
@@ -33,7 +33,71 @@ describe('searchProducts', () => {
     return store.dispatch(searchProducts()).then(() => {
       const newState = store.getState();
 
-      expect(newState.search.products).toBe(products);
+      expect(newState.search.products).toEqual(products);
+    });
+  });
+
+  describe('sets alert when failed', () => {
+    beforeEach(() => {
+      moxios.install();
+    });
+
+    afterEach(() => {
+      moxios.uninstall();
+    });
+
+    test('sets alert when validation error', () => {
+      const error = {
+        response: {
+          status: 400,
+          data: {
+            errors: [{ msg: 'test' }],
+          },
+        },
+      };
+
+      const store = storeFactory();
+
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+
+        request.respondWith({
+          status: 400,
+          response: error,
+        });
+      });
+
+      return store.dispatch(searchProducts()).then(() => {
+        const newState = store.getState();
+
+        expect(newState.alert.length).toBe(1);
+      });
+    });
+
+    test('sets alert when server error', () => {
+      const error = {
+        response: {
+          status: 500,
+          data: {},
+        },
+      };
+
+      const store = storeFactory();
+
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+
+        request.respondWith({
+          status: 500,
+          response: error,
+        });
+      });
+
+      return store.dispatch(searchProducts()).then(() => {
+        const newState = store.getState();
+
+        expect(newState.alert.length).toBe(1);
+      });
     });
   });
 });
