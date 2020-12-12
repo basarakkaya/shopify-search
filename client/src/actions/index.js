@@ -34,11 +34,23 @@ export const searchProducts = (keyword) => async (dispatch) => {
   try {
     dispatch({ type: actionTypes.SEARCH_INPROGRESS });
 
-    const products = await axios.get(`/api/products?keyword=${keyword}`);
+    const products = await axios.get(
+      `/api/products${keyword && `?keyword=${keyword}`}`
+    );
 
     dispatch({ type: actionTypes.SEARCH, payload: products.data });
   } catch (error) {
-    dispatch(setAlert('An error occured - Cannot fetch products', 'danger'));
+    const errors = error.response.data.errors;
+    const statusCode = error.response.status;
+
+    if (errors) {
+      errors.forEach((err) => {
+        const msg = `An error occured: ${err.msg} -- Status: ${statusCode}`;
+        dispatch(setAlert(msg, 'danger'));
+      });
+    } else {
+      dispatch(setAlert(`An error occured - Status: ${statusCode}`, 'danger'));
+    }
 
     // clear list & loading state
     dispatch({
