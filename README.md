@@ -26,6 +26,8 @@ To run in development mode, run `npm run dev` in root directory. This will initi
 
 To run in production mode, run `npm run build:client` in root directory, or `yarn run build` in `client` directory. Afterwards run `npm start` in the root directory. The app will be served on `localhost:5000`.
 
+IMPORTANT NOTE: If you want to try production mode on your local machine, change the `start` script of root directory as `cross-env NODE_ENV=production node server`. Otherwise, client files will not be served.
+
 ## Heroku Deployment & Environment Variables
 
 To deploy to Heroku, no extra process is required - except creating environment variables.

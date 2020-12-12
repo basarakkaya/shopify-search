@@ -4,7 +4,7 @@
   "private": true,
   "main": "server.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=production node server",
+    "start": "node server",
     "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
     "dev:server": "nodemon server",
     "dev:client": "npm start --prefix client",
