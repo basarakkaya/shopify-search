@@ -26,8 +26,10 @@ router.get(
       const products = await axios.get(
         `https://${config.get('apiKey')}:${config.get(
           'apiSecret'
-        )}@${config.get('apiURL')}/admin/products.json?title=${
+        )}@${config.get('apiURL')}/admin/products.json?limit=12&title=${
           req.query.keyword
+        }${
+          req.query.lastId ? `&since_id=${req.query.lastId}` : ''
         }&fields=id,title`
       );
 
