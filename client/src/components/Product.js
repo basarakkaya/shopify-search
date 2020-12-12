@@ -6,6 +6,13 @@ import { loremIpsum } from 'lorem-ipsum';
 
 const CustomCard = styled(Card)`
   height: 100%;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 8px 2px;
+  transition: all ease-in-out 0.2s;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 6px 8px 2px;
+  }
 `;
 
 const Product = ({ product: { title = '', id = '' } }) => {
