@@ -42,4 +42,5 @@ Product.propTypes = {
   }).isRequired,
 };
 
-export default Product;
+// Loerm Ipsum re-render issue
+export default React.memo(Product);

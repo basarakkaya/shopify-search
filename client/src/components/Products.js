@@ -25,6 +25,7 @@ export const UnconnectedProducts = ({
   loading,
   keyword = '',
   searchProducts,
+  lastPage,
 }) => {
   /**
    * @description calls `searchProducts` action creator to load more products
@@ -64,7 +65,7 @@ export const UnconnectedProducts = ({
           </ProductContainer>
         ))}
       </Row>
-      {!loading && (
+      {!loading && !lastPage && (
         <Button data-test='products-load-more' outline block onClick={loadMore}>
           Load More
         </Button>
@@ -93,10 +94,13 @@ UnconnectedProducts.propTypes = {
   searchProducts: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = ({ search: { products, loading, keyword } }) => ({
+const mapStateToProps = ({
+  search: { products, loading, keyword, lastPage },
+}) => ({
   products,
   loading,
   keyword,
+  lastPage,
 });
 
 export default connect(mapStateToProps, { searchProducts })(

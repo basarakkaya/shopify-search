@@ -5,6 +5,7 @@ const initialState = {
   loading: false,
   products: [],
   keyword: '',
+  lastPage: false,
 };
 
 /**
@@ -31,6 +32,7 @@ export default (state = initialState, action) => {
         ...state,
         loading: false,
         products: [...state.products, ...payload],
+        lastPage: payload.length < 12,
       };
     case actionTypes.NEW_SEARCH:
       return {
@@ -38,6 +40,7 @@ export default (state = initialState, action) => {
         keyword: payload,
         loading: false,
         products: [],
+        lastPage: false,
       };
     default:
       return state;
